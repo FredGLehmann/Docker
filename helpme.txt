@@ -1,0 +1,11 @@
+# Récupérer une image
+docker pull
+
+# Lister les images locales
+docker images -a
+
+# Lister les containers qui tournent
+docker ps
+
+# lancer un container en mode interfactif
+docker run -ti --name MonContainer MonImage bash
