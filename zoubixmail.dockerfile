@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
 	postfix \
 	dovecot-core \
 	dovecot-imapd \
-	rspamd
+	rspamd \
+	opendkim \
+	opendkim-tools \
+	certbot \
 	vim
-
-RUN pip install awscli --upgrade
