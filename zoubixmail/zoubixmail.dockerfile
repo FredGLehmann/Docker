@@ -12,4 +12,5 @@ RUN apt-get update && apt-get install -y \
 	opendkim \
 	opendkim-tools \
 	certbot \
+	nfs-common \
 	vim
