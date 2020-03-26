@@ -1,0 +1,11 @@
+mailrelay:
+        image: 'zbxmail'
+        restart: unless-stopped
+        container_name : 'zbxmail'
+        hostname: 'mail.zoubix.net'
+#        environment:
+        volumes:
+                - '/fsdocker/zbxmail/var-spool-postfix:/var/spool/postfix'
+        ports:
+                - "IP_INTERNE:25:25"
+#
