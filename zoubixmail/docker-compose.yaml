@@ -1,5 +1,5 @@
-mailrelay:
-        image: 'zbxmail'
+zbxmail:
+        image: 'zbxmail:latest'
         restart: unless-stopped
         container_name : 'zbxmail'
         hostname: 'mail.zoubix.net'

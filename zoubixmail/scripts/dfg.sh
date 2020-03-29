@@ -1,4 +1,4 @@
-! /usr/bin/env bash
+#! /bin/bash
 set -eu 
 
 # dfg: Daemon Foreground
@@ -7,12 +7,15 @@ set -eu
 
 function display_help(){
 	cat <<EOF
-		dfg: Daemon Foreground
-		Starts a daemon and runs in foreground while the daemon is active, and proxies signals.
-		As a result, a daemonizing process can be run with supervisor.
-		Usage: $(basename $0) <pidfile> <command...>
-	EOF
+dfg: Daemon Foreground
+Starts a daemon and runs in foreground while the daemon is active, and proxies signals.
+As a result, a daemonizing process can be run with supervisor.
+
+Usage: $(basename $0) <pidfile> <command...>
+EOF
+exit 0
 }
+
 [ $# -lt 2 ] && display_help
 
 # Arguments

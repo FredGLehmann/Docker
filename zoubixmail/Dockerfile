@@ -16,15 +16,14 @@ RUN apt-get update -qq && \
 		rspamd \
 		opendkim \
 		opendkim-tools \
-		certbot \
 		nfs-common \
-		supervisor \
 		rsyslog \
-		vim
+		supervisor
 
 # Ajoutons les fichiers de config
 ADD conf/main.cf /etc/postfix/main.cf
 ADD conf/mailname /etc/mailname
+ADD conf/rsyslog.conf /etc/rsyslog.conf
 ADD conf/supervisor.conf /etc/supervisor/conf.d/
 # Ajoutons les scripts et configurons les
 ADD scripts/dfg.sh /usr/local/bin/dfg.sh
