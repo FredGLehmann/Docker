@@ -20,16 +20,25 @@ RUN apt-get update -qq && \
 		rsyslog \
 		supervisor
 
-# Ajoutons les fichiers de config
+# Ajoutons les fichiers de config pour postfix et dovecot
 ADD conf/main.cf /etc/postfix/main.cf
 ADD conf/mailname /etc/mailname
+#
+# Ajoutons le fichier de config de rsyslog
 ADD conf/rsyslog.conf /etc/rsyslog.conf
+#
+# Ajoutons le fichier de config supervisor
 ADD conf/supervisor.conf /etc/supervisor/conf.d/
-# Ajoutons les scripts et configurons les
+#
+# Ajoutons les scripts de demarrage et configurons les
 ADD scripts/dfg.sh /usr/local/bin/dfg.sh
 ADD scripts/run.sh /root/run.sh
 RUN chmod +x /usr/local/bin/dfg.sh
 RUN chmod +x /root/run.sh
+#
+# Creons les utilisateurs
+RUN useradd -d /home/fred fred
+RUN useradd -d /home/klara klara
 
 # Configuration des ports réseau
 EXPOSE 25
