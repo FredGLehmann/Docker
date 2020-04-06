@@ -6,6 +6,8 @@ zbxmail:
 #        environment:
         volumes:
                 - '/fsdocker/zbxmail/var-spool-postfix:/var/spool/postfix'
+                - '/fsdocker/zbxmail/home:/home'
         ports:
                 - "IP_INTERNE:25:25"
+                - "IP_INTERNE:143:143"
 #

@@ -26,6 +26,11 @@ readme_directory = no
 # fresh installs.
 compatibility_level = 2
 
+# mailboxes
+home_mailbox = Maildir/
+# on utilise dovecot pour la distribution locale plutot que postfix
+mailbox_transport = lmtp:inet:localhost
+
 # TLS parameters
 #smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
 #smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key

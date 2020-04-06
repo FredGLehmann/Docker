@@ -11,8 +11,8 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -qq && \
 	apt-get install -qq -y --no-install-recommends postfix \
-		dovecot-core \
 		dovecot-imapd \
+		dovecot-lmtpd \
 		rspamd \
 		opendkim \
 		opendkim-tools \
@@ -21,7 +21,7 @@ RUN apt-get update -qq && \
 		supervisor
 
 # Ajoutons les fichiers de config pour postfix et dovecot
-ADD conf/main.cf /etc/postfix/main.cf
+ADD conf/postfix/main.cf /etc/postfix/main.cf
 ADD conf/mailname /etc/mailname
 #
 # Ajoutons le fichier de config de rsyslog
@@ -40,8 +40,10 @@ RUN chmod +x /root/run.sh
 RUN useradd -d /home/fred fred
 RUN useradd -d /home/klara klara
 
-# Configuration des ports réseau
+# Port SMTP
 EXPOSE 25
+# Port IMAP
+EXPOSE 143
 
 # Let's GO !
 CMD ["/root/run.sh"]
