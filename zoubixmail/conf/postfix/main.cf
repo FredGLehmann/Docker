@@ -2,8 +2,8 @@
 
 
 #  Identity
-myhostname = mail.zoubix.net
-mydomain = zoubix.net
+myhostname = mail.zoubixlab.net
+mydomain = zoubixlab.net
 myorigin = $mydomain
 mydestination = $myhostname, locahost.$mydomain, $mydomain
 #
@@ -29,7 +29,7 @@ compatibility_level = 2
 # mailboxes
 home_mailbox = Maildir/
 # on utilise dovecot pour la distribution locale plutot que postfix
-mailbox_transport = lmtp:inet:localhost
+mailbox_transport = lmtp:unix:private/dovecot-lmtp
 
 # TLS parameters
 #smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem

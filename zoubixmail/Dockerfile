@@ -24,6 +24,10 @@ RUN apt-get update -qq && \
 ADD conf/postfix/main.cf /etc/postfix/main.cf
 ADD conf/mailname /etc/mailname
 #
+# Ajoutons les fichiers de config pour dovecot
+ADD conf/dovecot/dovecot.conf /etc/dovecot/dovecot.conf
+ADD conf/dovecot/conf.d/* /etc/dovecot/conf.d/
+#
 # Ajoutons le fichier de config de rsyslog
 ADD conf/rsyslog.conf /etc/rsyslog.conf
 #
@@ -39,11 +43,20 @@ RUN chmod +x /root/run.sh
 # Creons les utilisateurs
 RUN useradd -d /home/fred fred
 RUN useradd -d /home/klara klara
+#
+# Gestion des certificats
+RUN mkdir /etc/postfix/certs
+RUN chmod 600 /etc/postfix/certs
+ADD conf/certs/cert.pem /etc/postfix/certs/cert.pem
+ADD conf/certs/privkey.pem /etc/postfix/certs/privkey.pem
+RUN chmod 600 /etc/postfix/certs/cert.pem
+RUN chmod 600 /etc/postfix/certs/privkey.pem
 
 # Port SMTP
 EXPOSE 25
-# Port IMAP
+# Port IMAP & IMAPS
 EXPOSE 143
+EXPOSE 993
 
 # Let's GO !
 CMD ["/root/run.sh"]

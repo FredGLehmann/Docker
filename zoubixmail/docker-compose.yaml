@@ -1,8 +1,8 @@
 zbxmail:
-        image: 'zbxmail:latest'
+        image: 'zbxlabmail:latest'
         restart: unless-stopped
-        container_name : 'zbxmail'
-        hostname: 'mail.zoubix.net'
+        container_name : 'zbxlabmail'
+        hostname: 'mail.zoubixlab.net'
 #        environment:
         volumes:
                 - '/fsdocker/zbxmail/var-spool-postfix:/var/spool/postfix'
