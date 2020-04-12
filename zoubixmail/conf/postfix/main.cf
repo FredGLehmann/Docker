@@ -5,47 +5,75 @@
 myhostname = mail.zoubixlab.net
 mydomain = zoubixlab.net
 myorigin = $mydomain
-mydestination = $myhostname, locahost.$mydomain, $mydomain
 #
-# Networks (uniquement le serveur local, ajouter d'autre IP au besoin si autre machine sur le réseau)
-mynetworks = 127.0.0.0/8
-
 #smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
 smtpd_banner = ZOUBIX ESMTP SERVER
 biff = no
-
+#
 # appending .domain is the MUA's job.
 append_dot_mydomain = no
-
+#
 # Uncomment the next line to generate "delayed mail" warnings
 #delay_warning_time = 4h
-
+#
 readme_directory = no
-
+#
 # See http://www.postfix.org/COMPATIBILITY_README.html -- default to 2 on
 # fresh installs.
 compatibility_level = 2
-
+#
 # mailboxes
 home_mailbox = Maildir/
-# on utilise dovecot pour la distribution locale plutot que postfix
-mailbox_transport = lmtp:unix:private/dovecot-lmtp
-
-# TLS parameters
-#smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
-#smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
-#smtpd_use_tls=yes
-#smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
-#smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
-
-# See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
-# information on enabling SSL in the smtp client.
-
+#
+### TLS parameters
+# Les clefs
+smtpd_tls_cert_file = /etc/postfix/certs/mail.zoubixlab.net.pem
+smtpd_tls_key_file = /etc/postfix/certs/mail.zoubixlab.net.key
+# On propose le TLS mains ce n'est pas obligatoire
+smtpd_use_tls = yes
+# l'authent ne peut se faire que si TLS
+smtpd_tls_auth_only = yes
+# On demande le header pour qu'il soit dans les logs
+smtpd_tls_received_header = yes
+smtpd_tls_session_cache_timeout = 3600s
+tls_random_source = dev:/dev/urandom
+# Niveau de log ++
+smtp_tls_loglevel = 3
+###
+#
+### Authent des users
+# Authentification des utilisateurs
+smtpd_sasl_auth_enable = yes
+#
+# Dovecot pour authentifier les utilisateurs
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+#
+# On note l'identifiant de l'utilisateur dans les messages
+smtpd_sasl_authenticated_header = yes
+###
+#
+### Les regles de distribution/relay
+mynetworks = 127.0.0.0/8
+mydestination = $myhostname, locahost.$mydomain, $mydomain, localhost
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+#
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
+#
 relayhost = 
+#
 mailbox_size_limit = 0
 recipient_delimiter = +
+#
 inet_interfaces = all
 inet_protocols = all
+#
+### Les regles locales
+mailbox_transport = lmtp:unix:private/dovecot-lmtp
+#
+milter_default_action = accept
+milter_protocol = 6
+# on envoi les messages venant de SMTPD vers DKIM
+smtpd_milters = unix:private/opendkim/opendkim.sock
+non_smtpd_milters = inet:localhost:12345
