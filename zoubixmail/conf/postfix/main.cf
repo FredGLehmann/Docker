@@ -26,40 +26,15 @@ compatibility_level = 2
 home_mailbox = Maildir/
 #
 ### TLS parameters
-# Les clefs
-smtpd_tls_cert_file = /etc/postfix/certs/mail.zoubixlab.net.pem
-smtpd_tls_key_file = /etc/postfix/certs/mail.zoubixlab.net.key
-# On propose le TLS mains ce n'est pas obligatoire
-smtpd_use_tls = yes
-# l'authent ne peut se faire que si TLS
-smtpd_tls_auth_only = yes
-# On demande le header pour qu'il soit dans les logs
-smtpd_tls_received_header = yes
-smtpd_tls_session_cache_timeout = 3600s
-tls_random_source = dev:/dev/urandom
-# Niveau de log ++
-smtp_tls_loglevel = 3
 ###
 #
-### Authent des users
-# Authentification des utilisateurs
-smtpd_sasl_auth_enable = yes
-#
-# Dovecot pour authentifier les utilisateurs
-smtpd_sasl_type = dovecot
-smtpd_sasl_path = private/auth
-#
-# On note l'identifiant de l'utilisateur dans les messages
-smtpd_sasl_authenticated_header = yes
-###
 #
 ### Les regles de distribution/relay
 mynetworks = 127.0.0.0/8
 mydestination = $myhostname, locahost.$mydomain, $mydomain, localhost
-smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 #
-alias_maps = hash:/etc/aliases
-alias_database = hash:/etc/aliases
+alias_maps = hash:/etc/postfix/aliases
+alias_database = hash:/etc/postfix/aliases
 #
 relayhost = 
 #
@@ -69,11 +44,60 @@ recipient_delimiter = +
 inet_interfaces = all
 inet_protocols = all
 #
+###
+#
+### Outgoing Connections (postfix as sender)
+smtp_tls_security_level = may
+#
+### Inbound connections
+# On propose le TLS mains ce n'est pas obligatoire
+smtpd_tls_security_level = may
+smtpd_tls_protocols = !SSLv2, !SSLv3
+smtpd_tls_ciphers = high
+# Les clefs
+smtpd_tls_cert_file = /etc/postfix/certs/mail.zoubixlab.net.pem
+smtpd_tls_key_file = /etc/postfix/certs/mail.zoubixlab.net.key
+# l'authent ne peut se faire que si TLS
+smtpd_tls_auth_only = yes
+# On demande le header pour qu'il soit dans les logs
+smtpd_tls_received_header = yes
+smtpd_tls_session_cache_timeout = 3600s
+tls_random_source = dev:/dev/urandom
+# Niveau de log ++
+smtp_tls_loglevel = 3
+# estrictions de relay
+smtpd_relay_restrictions =	permit_mynetworks
+				permit_sasl_authenticated
+				reject_non_fqdn_recipient
+                                reject_unknown_recipient_domain
+                                reject_unauth_destination
+#
+smtpd_recipient_restrictions = hash:/etc/postfix/local_recipient_map
+# Foreign mail servers must present a valid "HELO"
+smtpd_helo_required = yes
+smtpd_helo_restrictions =   permit_mynetworks
+                            reject_invalid_helo_hostname
+                            reject_non_fqdn_helo_hostname
+                            reject_unknown_helo_hostname
+
+# Block clients, which start sending too early
+smtpd_data_restrictions = reject_unauth_pipelining
 ### Les regles locales
 mailbox_transport = lmtp:unix:private/dovecot-lmtp
+# Authentification des utilisateurs
+smtpd_sasl_auth_enable = yes
+# Dovecot pour authentifier les utilisateurs
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+# On note l'identifiant de l'utilisateur dans les messages
+smtpd_sasl_authenticated_header = yes
 #
-milter_default_action = accept
+### Les filtres 
+##
+## Spam filter and DKIM signatures via Rspamd
+##
+smtpd_milters = inet:localhost:11332
+non_smtpd_milters = inet:localhost:11332
 milter_protocol = 6
-# on envoi les messages venant de SMTPD vers DKIM
-smtpd_milters = unix:private/opendkim/opendkim.sock
-non_smtpd_milters = inet:localhost:12345
+milter_mail_macros =  i {mail_addr} {client_addr} {client_name} {auth_authen}
+milter_default_action = accept

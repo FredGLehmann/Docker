@@ -13,7 +13,9 @@ RUN apt-get update -qq && \
 	apt-get install -qq -y --no-install-recommends postfix \
 		dovecot-imapd \
 		dovecot-lmtpd \
+		dovecot-sieve \
 		rspamd \
+		redis-server \
 		opendkim \
 		opendkim-tools \
 		nfs-common \
@@ -23,6 +25,8 @@ RUN apt-get update -qq && \
 # Ajoutons les fichiers de config pour postfix et dovecot
 ADD conf/postfix/main.cf /etc/postfix/main.cf
 ADD conf/mailname /etc/mailname
+ADD conf/postfix/local_recipient_map /etc/postfix/local_recipient_map
+ADD conf/postfix/aliases /etc/postfix/aliases
 #
 # Gestion des certificats
 RUN mkdir /etc/postfix/certs
@@ -35,6 +39,13 @@ RUN chmod 400 /etc/postfix/certs/mail.zoubixlab.net.key
 # Ajoutons les fichiers de config pour dovecot
 ADD conf/dovecot/dovecot.conf /etc/dovecot/dovecot.conf
 ADD conf/dovecot/conf.d/* /etc/dovecot/conf.d/
+#
+# Ajoutons les fichiers de config pour dovecot-sieve
+RUN mkdir -p /var/mail/sieve/global
+ADD conf/sieve/* /var/mail/sieve/global/
+#
+# Ajoutons les fichiers de config pour rspamd
+ADD conf/rspamd/* /etc/rspamd/
 #
 # Ajoutons le fichier de config de rsyslog
 ADD conf/rsyslog.conf /etc/rsyslog.conf
@@ -61,6 +72,8 @@ RUN chmod +x /root/run.sh
 # Creons les utilisateurs
 RUN useradd -d /home/fred fred
 RUN useradd -d /home/klara klara
+RUN useradd -d /home/cel cel
+RUN useradd -d /home/bernard bernard
 
 # Port SMTP
 EXPOSE 25
