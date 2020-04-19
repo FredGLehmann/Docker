@@ -1,2 +1,2 @@
 # nom de domaine        nom de domaine  selector   fichier clef priv
-zoubixlab.net           zoubixlab.net:dkim:/etc/opendkim/opendkim.key
+zoubix.net           zoubix.net:dkim:/etc/opendkim/opendkim.key

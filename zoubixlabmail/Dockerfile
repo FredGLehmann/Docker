@@ -31,10 +31,10 @@ ADD conf/postfix/aliases /etc/postfix/aliases
 # Gestion des certificats
 RUN mkdir /etc/postfix/certs
 RUN chmod 600 /etc/postfix/certs
-ADD conf/certs/mail.zoubix.net.pem /etc/postfix/certs/mail.zoubix.net.pem
-ADD conf/certs/mail.zoubix.net.key /etc/postfix/certs/mail.zoubix.net.key
-RUN chmod 400 /etc/postfix/certs/mail.zoubix.net.pem
-RUN chmod 400 /etc/postfix/certs/mail.zoubix.net.key
+ADD conf/certs/mail.zoubixlab.net.pem /etc/postfix/certs/mail.zoubixlab.net.pem
+ADD conf/certs/mail.zoubixlab.net.key /etc/postfix/certs/mail.zoubixlab.net.key
+RUN chmod 400 /etc/postfix/certs/mail.zoubixlab.net.pem
+RUN chmod 400 /etc/postfix/certs/mail.zoubixlab.net.key
 #
 # Ajoutons les fichiers de config pour dovecot
 ADD conf/dovecot/dovecot.conf /etc/dovecot/dovecot.conf
