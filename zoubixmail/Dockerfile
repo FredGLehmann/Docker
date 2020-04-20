@@ -31,8 +31,8 @@ ADD conf/postfix/aliases /etc/postfix/aliases
 # Gestion des certificats
 RUN mkdir /etc/postfix/certs
 RUN chmod 600 /etc/postfix/certs
-ADD conf/certs/mail.zoubix.net.pem /etc/postfix/certs/mail.zoubix.net.pem
-ADD conf/certs/mail.zoubix.net.key /etc/postfix/certs/mail.zoubix.net.key
+ADD conf/certs/smtp.zoubix.net.pem /etc/postfix/certs/smtp.zoubix.net.pem
+ADD conf/certs/smtp.zoubix.net.key /etc/postfix/certs/smtp.zoubix.net.key
 RUN chmod 400 /etc/postfix/certs/mail.zoubix.net.pem
 RUN chmod 400 /etc/postfix/certs/mail.zoubix.net.key
 #
