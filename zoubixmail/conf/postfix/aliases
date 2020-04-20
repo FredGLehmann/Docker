@@ -1,4 +1,5 @@
-postmaster:    root
+postmaster:    fred@zoubix.net
+root:    fred@zoubix.net
 frederic.lehmann: fred
 fred.lehmann: fred
 celine.lehmann: cel
