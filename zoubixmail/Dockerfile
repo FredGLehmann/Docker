@@ -33,8 +33,8 @@ RUN mkdir /etc/postfix/certs
 RUN chmod 600 /etc/postfix/certs
 ADD conf/certs/smtp.zoubix.net.pem /etc/postfix/certs/smtp.zoubix.net.pem
 ADD conf/certs/smtp.zoubix.net.key /etc/postfix/certs/smtp.zoubix.net.key
-RUN chmod 400 /etc/postfix/certs/mail.zoubix.net.pem
-RUN chmod 400 /etc/postfix/certs/mail.zoubix.net.key
+RUN chmod 400 /etc/postfix/certs/smtp.zoubix.net.pem
+RUN chmod 400 /etc/postfix/certs/smtp.zoubix.net.key
 #
 # Ajoutons les fichiers de config pour dovecot
 ADD conf/dovecot/dovecot.conf /etc/dovecot/dovecot.conf
