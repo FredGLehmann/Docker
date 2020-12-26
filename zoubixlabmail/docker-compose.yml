@@ -1,0 +1,11 @@
+version: '3'
+services :
+ zoubixlabmail:
+        image: '894260024467.dkr.ecr.eu-west-3.amazonaws.com/zoubixmail:lab1'
+        restart: unless-stopped
+        container_name : 'zoubixlabmail'
+        hostname: 'mail.zoubixlab.net'
+        ports:
+                - "25:25"
+                - "143:143"
+                - "993:993"
