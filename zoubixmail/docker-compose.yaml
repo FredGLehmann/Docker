@@ -11,4 +11,5 @@ zbxmail:
         ports:
                 - "IP_INTERNE:25:25"
                 - "IP_INTERNE:993:993"
+                - "IP_INTERNE:11334:11334"
 #
