@@ -1,0 +1,15 @@
+zbxmail:
+        image: 'zoubixlabmail:latest'
+        restart: unless-stopped
+        container_name : 'zoubixlabmail'
+        hostname: 'mail.zoubixlab.net'
+#        environment:
+        volumes:
+                - '/fsdocker/zoubixmail/var-spool-postfix:/var/spool/postfix'
+                - '/fsdocker/zoubixmail/home:/home'
+                - '/fsdocker/zoubixmail/var/lib/rspamd:/var/lib/rspamd'
+        ports:
+                - "IP_INTERNE:25:25"
+                - "IP_INTERNE:143:143"
+                - "IP_INTERNE:993:993"
+#
