@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# avec un docker cp on ne peut pas copier de symlink...
+# on pourrait passer par un tar, mais ça me parait compliqué...
+#
+certdir=/etc/letsencrypt/live/smtp.zoubix.net
+tempodir=/etc/letsencrypt/tempo
+#
+echo "---------------------------------------------------" >> /var/log/posthook.log
+echo "$(date) - Letsencrypt posthook starting..." >> /var/log/posthook.log
+#
+mkdir -p $tempodir
+cp $certdir/fullchain.pem $tempodir/smtp.zoubix.net.pem
+cp $certdir/privkey.pem $tempodir/smtp.zoubix.net.key
+echo "$(date) - Copy cert in tempo dir..." >> /var/log/posthook.log
+# on copie les certificats vers le container zoubixmail
+docker cp $tempodir/smtp.zoubix.net.pem zoubixmail:/etc/postfix/certs/smtp.zoubix.net.pem
+docker cp $tempodir/smtp.zoubix.net.key zoubixmail:/etc/postfix/certs/smtp.zoubix.net.key
+echo "$(date) - Copy cert in zoubixmail docker container..." >> /var/log/posthook.log
+# on s'assure que les droits sont ok
+docker exec zoubixmail chmod 400 /etc/postfix/certs/smtp.zoubix.net.pem
+docker exec zoubixmail chmod 400 /etc/postfix/certs/smtp.zoubix.net.key
+echo "$(date) - Set the good rights on the key files in the container..." >> /var/log/posthook.log
+# on redemarre postfix et dovecot
+docker exec zoubixmail /etc/init.d/postfix reload
+docker exec zoubixmail /etc/init.d/dovecot reload
+echo "$(date) - Reload postfix and Dovecot..." >> /var/log/posthook.log
+# On fait un peu de menage
+rm $tempodir/smtp.zoubix.*
+rmdir $tempodir
+echo "$(date) - Letsencrypt posthook ended..." >> /var/log/posthook.log

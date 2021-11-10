@@ -55,8 +55,8 @@ smtpd_tls_security_level = may
 smtpd_tls_protocols = !SSLv2, !SSLv3
 smtpd_tls_ciphers = high
 # Les clefs
-smtpd_tls_cert_file = /etc/postfix/certs/mail.zoubix.net.pem
-smtpd_tls_key_file = /etc/postfix/certs/mail.zoubix.net.key
+smtpd_tls_cert_file = /etc/postfix/certs/smtp.zoubix.net.pem
+smtpd_tls_key_file = /etc/postfix/certs/smtp.zoubix.net.key
 # l'authent ne peut se faire que si TLS
 smtpd_tls_auth_only = yes
 # On demande le header pour qu'il soit dans les logs

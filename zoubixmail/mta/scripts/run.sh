@@ -13,9 +13,9 @@ chown -R _rspamd:_rspamd /var/lib/rspamd
 /usr/sbin/postmap /etc/postfix/local_recipient_map
 /usr/sbin/postalias /etc/postfix/aliases
 # on calcul des filtres sieve de base
-/usr/sbin/sievec /var/mail/sieve/global/spam-global.sieve
-/usr/sbin/sievec /var/mail/sieve/global/spam-global.sieve
-/usr/sbin/sievec /var/mail/sieve/global/spam-global.sieve
+/usr/bin/sievec /var/mail/sieve/global/spam-global.sieve
+#/usr/bin/sievec /var/mail/sieve/global/learn-spam.sieve
+#/usr/bin/sievec /var/mail/sieve/global/learn-ham.sieve
 # au cas ou on supprime le fichier pid de postfix
 rm -f /var/spool/postfix/pid/*.pid
 # on lance supervisord
