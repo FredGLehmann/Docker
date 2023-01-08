@@ -1,0 +1,7 @@
+wdr-tomcat-user:
+        image: 'wdr-user:latest'
+        container_name: 'wdr-user'
+        restart: unless-stopped
+        hostname: 'wdr.transdevlabs.net'
+        ports:
+                - "8080:8080"
